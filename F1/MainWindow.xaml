@@ -1,0 +1,607 @@
+﻿<Window x:Class="F1.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"    
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:viewmodel="clr-namespace:F1"
+        xmlns:wpf="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+        Title="F1" Height="900" Width="1400">
+    <Window.Resources>
+        <viewmodel:ViewModel x:Key="ViewModel"/>
+        <Style TargetType="DataGridCell" x:Key="ActiveCellStyle">
+            <Setter Property="Background" Value="White"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Color}" Value="{x:Null}">
+                    <Setter Property="Background" Value="White"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Color}" Value="Yellow">
+                    <Setter Property="Background" Value="Yellow"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Color}" Value="Green">
+                    <Setter Property="Background" Value="LightGreen"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Color}" Value="Blue">
+                    <Setter Property="Background" Value="LightSkyBlue"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Color}" Value="Orange">
+                    <Setter Property="Background" Value="LightSalmon"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="DataGridCell" x:Key="TyreCellStyle">
+            <Setter Property="Background" Value="White"/>
+            <Style.Triggers>
+                <!--<DataTrigger Binding="{Binding Tyre}" Value="{x:Null}">
+                <Setter Property="Background" Value="Black"/>
+            </DataTrigger>-->
+                <!--<DataTrigger Binding="{Binding Tyre}" Value="0">
+                <Setter Property="Background" Value="Pink"/>
+            </DataTrigger>
+                <DataTrigger Binding="{Binding Tyre}" Value="1">
+                <Setter Property="Background" Value="MediumPurple"/>
+            </DataTrigger>-->
+                <DataTrigger Binding="{Binding Tyre}" Value="16">
+                    <Setter Property="Background" Value="Red"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Tyre}" Value="17">
+                    <Setter Property="Background" Value="Yellow"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Tyre}" Value="18">
+                    <Setter Property="Background" Value="LightGray"/>
+                </DataTrigger>
+                <!--<DataTrigger Binding="{Binding Tyre}" Value="5">
+                <Setter Property="Background" Value="LightSkyBlue"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Tyre}" Value="6">
+                <Setter Property="Background" Value="Orange"/>
+            </DataTrigger>-->
+                <DataTrigger Binding="{Binding Tyre}" Value="7">
+                    <Setter Property="Background" Value="LimeGreen"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Tyre}" Value="8">
+                    <Setter Property="Background" Value="Blue"/>
+                    <Setter Property="Foreground" Value="White"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="DataGridCell" x:Key="DRSCellStyle">
+            <Setter Property="Background" Value="White"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding DRS}" Value="{x:Null}">
+                    <Setter Property="Background" Value="White"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding DRS}" Value="On">
+                    <Setter Property="Background" Value="Green"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="DataGridCell" x:Key="FuelCellStyle">
+            <Setter Property="Background" Value="White"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding FuelMix}" Value="{x:Null}">
+                    <Setter Property="Background" Value="White"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding FuelMix}" Value="Lean">
+                    <Setter Property="Background" Value="Green"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding FuelMix}" Value="Standard">
+                    <Setter Property="Background" Value="White"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding FuelMix}" Value="Rich">
+                    <Setter Property="Background" Value="Red"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding FuelMix}" Value="Max">
+                    <Setter Property="Background" Value="Blue"/>
+                    <Setter Property="Foreground" Value="White"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="DataGridCell" x:Key="ERSCellStyle">
+            <Setter Property="Background" Value="White"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ERSMode}" Value="{x:Null}">
+                    <Setter Property="Background" Value="White"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding ERSMode}" Value="None">
+                    <Setter Property="Background" Value="Red"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding ERSMode}" Value="Low">
+                    <Setter Property="Background" Value="Bisque"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding ERSMode}" Value="Medium">
+                    <Setter Property="Background" Value="White"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding ERSMode}" Value="High">
+                    <Setter Property="Background" Value="Aqua"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding ERSMode}" Value="Overtake">
+                    <Setter Property="Background" Value="Blue"/>
+                    <Setter Property="Foreground" Value="White"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding ERSMode}" Value="Hotlap">
+                    <Setter Property="Background" Value="Green"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="DataGridCell" x:Key="TeamCellStyle">
+            <Setter Property="Background" Value="White"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Team}" Value="{x:Null}">
+                    <Setter Property="Background" Value="White"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Team}" Value="Mercedes">
+                    <Setter Property="Background" Value="Silver"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Team}" Value="Ferrari">
+                    <Setter Property="Background" Value="Red"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Team}" Value="Red Bull">
+                    <Setter Property="Background" Value="Blue"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Team}" Value="Williams">
+                    <Setter Property="Background" Value="LightSkyBlue"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Team}" Value="Aston Martin">
+                    <Setter Property="Background" Value="Green"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Team}" Value="Alpine">
+                    <Setter Property="Background" Value="DodgerBlue"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Team}" Value="Cash App RB">
+                    <Setter Property="Background" Value="CornflowerBlue"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Team}" Value="Haas">
+                    <Setter Property="Background" Value="Gold"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Team}" Value="McLaren">
+                    <Setter Property="Background" Value="DarkOrange"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Team}" Value="Kick Sauber">
+                    <Setter Property="Background" Value="LimeGreen"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="DataGridCell" x:Key="TyreAlertCellStyle">
+            <Setter Property="Background" Value="White"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding TyreAlert}" Value="{x:Null}">
+                    <Setter Property="Background" Value="White"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding TyreAlert}" Value="Green">
+                    <Setter Property="Background" Value="Green"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding TyreAlert}" Value="Blue">
+                    <Setter Property="Background" Value="LightBlue"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding TyreAlert}" Value="Yellow">
+                    <Setter Property="Background" Value="Yellow"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding TyreAlert}" Value="Red">
+                    <Setter Property="Background" Value="Red"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="DataGridCell" x:Key="CornerCutCellStyle">
+            <Setter Property="Background" Value="White"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding CornerCutValue}" Value="{x:Null}">
+                    <Setter Property="Background" Value="White"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding CornerCutValue}" Value="0">
+                    <Setter Property="Background" Value="White"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding CornerCutValue}" Value="1">
+                    <Setter Property="Background" Value="Orange"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding CornerCutValue}" Value="2">
+                    <Setter Property="Background" Value="Red"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="DataGridCell" x:Key="FastestLapCellStyle">
+            <Setter Property="Background" Value="White"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding FastestLap}" Value="{x:Null}">
+                    <Setter Property="Background" Value="White"/>
+                    <Setter Property="Foreground" Value="Black"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding FastestLap}" Value="true">
+                    <Setter Property="Background" Value="Purple"/>
+                    <Setter Property="Foreground" Value="White"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding FastestLap}" Value="false">
+                    <Setter Property="Background" Value="White"/>
+                    <Setter Property="Foreground" Value="Black"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+    </Window.Resources>
+    <TabControl SelectionChanged="TabControl_SelectionChanged"  Name="Tab" HorizontalAlignment="Left" VerticalAlignment="Top" >
+        <TabItem Header="Toplist">
+            <Grid DataContext="{Binding Source={StaticResource ViewModel}}" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="{Binding Path=Track,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="10,10,10,10" FontSize="24" Grid.Row="0" Grid.Column="0" />
+                <TextBlock Text="{Binding Path=Session,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="5,10,10,10" FontSize="24" Grid.Row="0" Grid.Column="1"/>
+                <TextBlock Text="{Binding Path=Weather,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="5,10,10,10" FontSize="24" Grid.Row="0" Grid.Column="2"/>
+                <TextBlock Text="{Binding Path=TimeLeft,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="5,10,10,10" FontSize="24" Grid.Row="0" Grid.Column="3" />
+                <TextBlock Text="{Binding Path=AIDifficulty,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="5,10,10,10" FontSize="24" Grid.Row="0" Grid.Column="4"/>
+                <TextBlock Text="{Binding Path=SeasonName,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="5,10,10,10" FontSize="24" Grid.Row="0" Grid.Column="5"/>
+                <!--<Button Content="Start" Command="{Binding StartCommand}" Margin="10,10,10,10" HorizontalAlignment="Left" VerticalAlignment="Bottom" Grid.Row="2" Grid.Column="0"/>-->
+                <!--<Button Content="Stop" Command="{Binding StopCommand}" Margin="10,10,10,10" HorizontalAlignment="Left" VerticalAlignment="Bottom" Grid.Row="2" Grid.Column="0"/>-->
+                <DataGrid Name="UserGrid" ItemsSource="{Binding Users}" Grid.Row="1" Grid.ColumnSpan="6" Grid.Column="0" Width="Auto" AutoGenerateColumns="False" CanUserAddRows="False">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Rank" Binding="{Binding CarPosition}" Width="Auto" FontSize="24" CellStyle="{StaticResource ActiveCellStyle}"/>
+                        <DataGridTextColumn Header="Driver" Binding="{Binding Name}" Width="Auto" FontSize="24" CellStyle="{StaticResource ActiveCellStyle}"/>
+                        <DataGridTextColumn Header="GapToLeader" Binding="{Binding GapToLeader}" Width="Auto" FontSize="24" CellStyle="{StaticResource ActiveCellStyle}"/>
+                        <DataGridTextColumn Header="GapToAhead" Binding="{Binding GapToAhead}" Width="Auto" FontSize="24" CellStyle="{StaticResource ActiveCellStyle}"/>
+                        <DataGridTextColumn Header="Tyres" Binding="{Binding TyreWear}"  Width="Auto" FontSize="24" CellStyle="{StaticResource TyreCellStyle}"/>
+                        <DataGridTemplateColumn Header="WingDamage" Width="Auto" IsReadOnly="True">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Image Source="{Binding WingDamage, UpdateSourceTrigger=PropertyChanged}" Height="30" Width="40"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="Nr Pits" Binding="{Binding NumberOfPitstops}"  Width="Auto" FontSize="24"/>
+                        <DataGridTextColumn Header="CornerCutting" Binding="{Binding CornerCuts}"  Width="Auto" FontSize="24" CellStyle="{StaticResource CornerCutCellStyle}"/>
+                        <DataGridTextColumn Header="Penalties" Binding="{Binding Penalties}"  Width="Auto" FontSize="24"/>
+                        <DataGridTemplateColumn Header="Pits" Width="30" IsReadOnly="True">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Image Source="{Binding InPits, UpdateSourceTrigger=PropertyChanged}" Height="20" Width="20"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="DRS" Binding="{Binding DRS}"  Width="Auto" FontSize="24" CellStyle="{StaticResource DRSCellStyle}"/>
+                        <DataGridTextColumn Header="ERSMode" Binding="{Binding ERSMode}"  Width="Auto" FontSize="24" CellStyle="{StaticResource ERSCellStyle}"/>
+                        <!--<DataGridTextColumn Header="FuelMix" Binding="{Binding FuelMix}"  Width="Auto" FontSize="24" CellStyle="{StaticResource FuelCellStyle}"/> -->
+                        <DataGridTextColumn Header="Fuel" Binding="{Binding Fuel}"  Width="Auto" FontSize="24" />
+                        <DataGridTextColumn Header="Team" Binding="{Binding Team}" Width="Auto" FontSize="24" CellStyle="{StaticResource TeamCellStyle}"/>
+                        <DataGridTextColumn Header="Best Lap" Binding="{Binding BestLap}" Width="Auto" FontSize="24" CellStyle="{StaticResource FastestLapCellStyle}"/>
+                        <DataGridTextColumn Header="Tyre Temp" Binding="{Binding TyreInnerTemp}"  Width="Auto" FontSize="24" CellStyle="{StaticResource TyreAlertCellStyle}"/>
+                        <!--<DataGridTextColumn Header="Pass +" Binding="{Binding PassPlus}"  Width="Auto" FontSize="24" />-->
+                        <!--<DataGridTextColumn Header="Pass -" Binding="{Binding PassMinus}"  Width="Auto" FontSize="24" />-->
+
+                        <!--<DataGridTextColumn Header="Gap(m)" Binding="{Binding GapInMeters}" Width="Auto" FontSize="24" CellStyle="{StaticResource ActiveCellStyle}"/>-->
+                        <!--<DataGridTextColumn Header="Current Lap" Binding="{Binding CurrentLap}" Width="Auto" FontSize="24" CellStyle="{StaticResource ActiveCellStyle}"/>-->
+                        <!--<DataGridTextColumn Header="Lap" Binding="{Binding LapNum}"  Width="Auto" FontSize="24" />-->
+
+                        <!--<DataGridTextColumn Header="ResultStatus" Binding="{Binding ResultStatus}"  Width="Auto" FontSize="24" />-->
+                        <!--<DataGridTextColumn Header="TractionControl" Binding="{Binding TractionControl}"  Width="Auto" FontSize="24" Visibility="Visible"/>
+                        <DataGridTextColumn Header="AntiLockBrakes" Binding="{Binding AntiLockBrakes}"  Width="Auto" FontSize="24" Visibility="Visible"/>-->
+
+                        <!--<DataGridTextColumn Header="Speed" Binding="{Binding Speed}"  Width="Auto" FontSize="24" />
+            <DataGridTextColumn Header="In Pits" Binding="{Binding Pits}"  Width="Auto" FontSize="24"/>
+                <DataGridTextColumn Header="BrakesTemp" Binding="{Binding BrakesTemp}"  Width="Auto" FontSize="24" />
+                <DataGridTextColumn Header="Tyre Surface" Binding="{Binding TyreSurfTemp}"  Width="Auto" FontSize="24" />
+                <DataGridTextColumn Header="EngineTemp" Binding="{Binding EngineTemp}"  Width="Auto" FontSize="24" />
+                <DataGridTextColumn Header="ERSStore" Binding="{Binding ERSStore}"  Width="Auto" FontSize="24" />-->
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </TabItem>
+
+        <TabItem Header="Status">
+            <Grid DataContext="{Binding Source={StaticResource ViewModel}}">
+                <Image Grid.RowSpan="5" Grid.ColumnSpan="6" Stretch="None" Source="Images/Test.png" VerticalAlignment="Top" HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding Path=LeftFrontWingDamage,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="20,30" FontSize="24" Foreground="Black" />
+                <TextBlock Grid.Row="0" Grid.Column="4" Text="{Binding Path=RightFrontWingDamage,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="0,30" FontSize="24" Foreground="Black" />
+                <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding Path=TyreWearLF,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="0,10" FontSize="24"  Foreground="Yellow"/>
+                <TextBlock Grid.Row="1" Grid.Column="4" Text="{Binding Path=TyreWearRF,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="16,10" FontSize="24"  Foreground="Yellow"/>
+                <TextBlock Grid.Row="3" Grid.Column="2" Text="{Binding Path=TyreWearLR,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="0,35" FontSize="24"  Foreground="Yellow"/>
+                <TextBlock Grid.Row="3" Grid.Column="4" Text="{Binding Path=TyreWearRR,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="18,35" FontSize="24"  Foreground="Yellow"/>
+                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Path=TyreTempLF,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="10,10" FontSize="24"  Foreground="Yellow"/>
+                <TextBlock Grid.Row="1" Grid.Column="5" Text="{Binding Path=TyreTempRF,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="10,10" FontSize="24"  Foreground="Yellow"/>
+                <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding Path=TyreTempLR,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="10,35" FontSize="24"  Foreground="Yellow"/>
+                <TextBlock Grid.Row="3" Grid.Column="5" Text="{Binding Path=TyreTempRR,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="10,35" FontSize="24"  Foreground="Yellow"/>
+                <TextBlock Grid.Row="4" Grid.Column="3" Text="{Binding Path=RearWingDamage,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="10" FontSize="24"  Foreground="Black"/>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="20*" />
+                    <RowDefinition Height="20*" />
+                    <RowDefinition Height="30*" />
+                    <RowDefinition Height="20*" />
+                    <RowDefinition Height="20*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="40" />
+                    <ColumnDefinition Width="70" />
+                    <ColumnDefinition Width="90" />
+                    <ColumnDefinition Width="80" />
+                    <ColumnDefinition Width="80" />
+                    <ColumnDefinition Width="80" />
+                </Grid.ColumnDefinitions>
+            </Grid>
+            <!--<StackPanel>
+                <Rectangle Width="150" Height="150" Stroke="Black" Margin="5,0,5,0">
+                    <Rectangle.Fill>
+                        <VisualBrush>
+                            <VisualBrush.Visual>
+                                <StackPanel Background="White">
+                                    <Rectangle Width="25" Height="25" Fill="Red" Margin="2" />
+                                    <TextBlock FontSize="10pt" Margin="2">Hello, World!</TextBlock>
+                                    <Button Margin="2">A Button</Button>
+                                </StackPanel>
+                            </VisualBrush.Visual>
+                        </VisualBrush>
+                    </Rectangle.Fill>
+                </Rectangle>
+            </StackPanel>-->
+        </TabItem>
+
+        <TabItem Header="Position">
+            <Grid Width="1300" Height="800" DataContext="{Binding Source={StaticResource ViewModel}}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="750"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <wpf:CartesianChart Series="{Binding SeriesCollection}" LegendLocation="Right" Grid.Row="0">
+                    <wpf:CartesianChart.AxisY>
+                        <wpf:Axis Title="Position" MinValue="-20" MaxValue="-1" LabelFormatter="{Binding YFormatter}">
+                            <wpf:Axis.Separator>
+                                <!--to force the display of all the labels all the time lets force the step-->
+                                <wpf:Separator Step="1"></wpf:Separator>
+                            </wpf:Axis.Separator>
+                        </wpf:Axis>
+                    </wpf:CartesianChart.AxisY>
+                    <wpf:CartesianChart.AxisX>
+                        <wpf:Axis Title="Lap" Labels="{Binding Labels}"></wpf:Axis>
+                    </wpf:CartesianChart.AxisX>
+                    <wpf:CartesianChart.DataTooltip>
+                        <wpf:DefaultTooltip SelectionMode="OnlySender" />
+                    </wpf:CartesianChart.DataTooltip>
+                </wpf:CartesianChart>
+                <Button Content="Select drivers" Command="{Binding SelectDriversCommand}" Margin="10,10,10,10" HorizontalAlignment="Left" VerticalAlignment="Bottom" Grid.Row="1" Grid.Column="0"/>
+            </Grid>
+        </TabItem>
+        
+        <TabItem Header="Final classification">
+            <Grid DataContext="{Binding Source={StaticResource ViewModel}}" >
+                <DataGrid Name="ResultGrid" ItemsSource="{Binding Users}" Grid.Row="1" Grid.ColumnSpan="4" Grid.Column="0" Width="Auto" AutoGenerateColumns="False" CanUserAddRows="False">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Position" Binding="{Binding m_position}" Width="Auto" FontSize="24" CellStyle="{StaticResource ActiveCellStyle}"/>
+                        <DataGridTextColumn Header="Driver" Binding="{Binding Name}" Width="Auto" FontSize="24" CellStyle="{StaticResource ActiveCellStyle}"/>
+                        <DataGridTextColumn Header="Team" Binding="{Binding Team}" Width="Auto" FontSize="24" CellStyle="{StaticResource ActiveCellStyle}"/>
+                        <DataGridTextColumn Header="Grid" Binding="{Binding m_gridPosition}" Width="Auto" FontSize="24" CellStyle="{StaticResource ActiveCellStyle}"/>
+                        <DataGridTextColumn Header="Pit stops" Binding="{Binding m_numPitStops}"  Width="Auto" FontSize="24" CellStyle="{StaticResource ActiveCellStyle}"/>
+                        <DataGridTextColumn Header="Best lap" Binding="{Binding BestLapTime}"  Width="Auto" FontSize="24" CellStyle="{StaticResource ActiveCellStyle}"/>
+                        <DataGridTextColumn Header="Gap" Binding="{Binding FCGap}"  Width="Auto" FontSize="24" CellStyle="{StaticResource ActiveCellStyle}"/>
+                        <DataGridTextColumn Header="Points" Binding="{Binding m_points}" Width="Auto" FontSize="24" CellStyle="{StaticResource ActiveCellStyle}"/>
+                        <DataGridTextColumn Header="Penalties" Binding="{Binding m_numPenalties}"  Width="Auto" FontSize="24" CellStyle="{StaticResource ActiveCellStyle}"/>
+                        <DataGridTextColumn Header="Time" Binding="{Binding m_penaltiesTime}"  Width="Auto" FontSize="24" CellStyle="{StaticResource ActiveCellStyle}"/>
+                        <DataGridTextColumn Header="Warnings" Binding="{Binding Warnings}"  Width="Auto" FontSize="24" CellStyle="{StaticResource ActiveCellStyle}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </TabItem>
+
+        <TabItem Header="Standings">
+            <TabControl Name="TabStandings" HorizontalAlignment="Left" VerticalAlignment="Top" >
+                <TabItem Header="Driver">
+                    <Grid DataContext="{Binding Source={StaticResource ViewModel}}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <DataGrid Name="Standings" AutoGenerateColumns="True" ItemsSource="{Binding Path=ChamionshipStandings}" Grid.Row="0"/>
+                        <StackPanel Orientation="Horizontal" Grid.Row="1">
+                            <Button Content="Reload points" Command="{Binding ReloadCommand}" Margin="10,10,10,10" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                            <Button Content="Reload position" Command="{Binding ReloadPosCommand}" Margin="10,10,10,10" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                            <ComboBox ItemsSource="{Binding Path=Seasons}" SelectedItem="{Binding Path=SelectedSeason}" Margin="10,10,10,10"/>
+                        </StackPanel>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Team">
+                    <Grid DataContext="{Binding Source={StaticResource ViewModel}}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <DataGrid Name="TeamStandings" AutoGenerateColumns="True" ItemsSource="{Binding Path=TeamChamionshipStandings}" Grid.Row="0"/>
+                        <StackPanel Orientation="Horizontal" Grid.Row="1">
+                            <Button Content="Reload points" Command="{Binding ReloadCommand}" Margin="10,10,10,10" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                            <Button Content="Reload position" Command="{Binding ReloadPosCommand}" Margin="10,10,10,10" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                            <ComboBox ItemsSource="{Binding Path=Seasons}" SelectedItem="{Binding Path=SelectedSeason}" Margin="10,10,10,10"/>
+                        </StackPanel>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="HeadToHead">
+                    <Grid DataContext="{Binding Source={StaticResource ViewModel}}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <DataGrid Name="Qualifying" AutoGenerateColumns="True" ItemsSource="{Binding Path=QualifyingH2H}" Grid.Row="0" Grid.Column="0"/>
+                        <DataGrid Name="Race" AutoGenerateColumns="True" ItemsSource="{Binding Path=RaceH2H}" Grid.Row="0" Grid.Column="1"/>
+                        <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.ColumnSpan="2">
+                            <Button Content="Reload" Command="{Binding ReloadPosCommand}" Margin="10,10,10,10" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                            <ComboBox ItemsSource="{Binding Path=Seasons}" SelectedItem="{Binding Path=SelectedSeason}" Margin="10,10,10,10"/>
+                        </StackPanel>
+                    </Grid>
+                </TabItem>
+
+            </TabControl>
+        </TabItem>
+
+        <TabItem Header="Race results">
+            <Grid DataContext="{Binding Source={StaticResource ViewModel}}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <DataGrid Name="RaceResult" AutoGenerateColumns="True" ItemsSource="{Binding Path=RaceResult}" Grid.Row="0"/>
+                <TextBlock Text="{Binding Path=DiffInRace,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="10,10,10,10" FontSize="18" Grid.Row="1"  />
+                <StackPanel Orientation="Horizontal" Grid.Row="2">
+                    <ComboBox ItemsSource="{Binding Path=Seasons}" SelectedItem="{Binding Path=SelectedSeason,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="10,10,10,10"/>
+                    <ComboBox ItemsSource="{Binding Path=Races}" SelectedItem="{Binding Path=SelectedRace}" Margin="10,10,10,10"/>
+                </StackPanel>
+            </Grid>
+        </TabItem>
+
+        <TabItem Header="Qualification results">
+            <Grid DataContext="{Binding Source={StaticResource ViewModel}}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <DataGrid Name="QualiResult" AutoGenerateColumns="True" ItemsSource="{Binding Path=QualiResult}" Grid.Row="0"/>
+                <TextBlock Text="{Binding Path=DiffInQuali,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="10,10,10,10" FontSize="18" Grid.Row="1"  />
+                <StackPanel Orientation="Horizontal" Grid.Row="2">
+                    <ComboBox ItemsSource="{Binding Path=Seasons}" SelectedItem="{Binding Path=SelectedSeason,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="10,10,10,10"/>
+                    <ComboBox ItemsSource="{Binding Path=Qualifications}" SelectedItem="{Binding Path=SelectedQuali}" Margin="10,10,10,10"/>
+                </StackPanel>
+            </Grid>
+        </TabItem>
+
+        <TabItem Header="BestLaps">
+            <Grid DataContext="{Binding Source={StaticResource ViewModel}}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <DataGrid Name="BestLaps" AutoGenerateColumns="True" ItemsSource="{Binding Path=BestLaps}" Grid.Row="0"/>
+                <StackPanel Orientation="Horizontal" Grid.Row="1">
+                    <Button Content="Reload" Command="{Binding ReloadPosCommand}" Margin="10,10,10,10" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Grid>
+        </TabItem>
+
+        <TabItem Header="Notes">
+            <Grid DataContext="{Binding Source={StaticResource ViewModel}}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="300"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- LEFT SIDE: TRACK LIST -->
+                <Border Grid.Column="0" Background="#f5f5f5" Padding="10">
+                    <DockPanel>
+                        <TextBlock DockPanel.Dock="Top" 
+                           Text="Tracks" 
+                           FontSize="18" 
+                           FontWeight="Bold" 
+                           Margin="0,0,0,10"/>
+
+                        <ListBox x:Name="TracksListBox"
+                         ItemsSource="{Binding TrackNotes}"
+                         SelectedItem="{Binding SelectedTrackNote}"
+                         DisplayMemberPath="Track"
+                         SelectionMode="Single"/>
+                    </DockPanel>
+                </Border>
+
+                <!-- RIGHT SIDE: TRACK DETAILS -->
+                <Border Grid.Column="1" Padding="20">
+                    <StackPanel>
+                        <TextBlock Text="Track Notes" 
+                           FontSize="18" 
+                           FontWeight="Bold" 
+                           Margin="0,0,0,20"/>
+
+                        <TextBlock Text="Notes:" 
+                           FontWeight="SemiBold" 
+                           Margin="0,0,0,5"/>
+                        <TextBox Text="{Binding SelectedTrackNote.Notes, UpdateSourceTrigger=PropertyChanged}"   
+                                 Height="500"
+                                 MinWidth="500"
+                                 HorizontalScrollBarVisibility="Auto"
+                                 VerticalScrollBarVisibility="Auto"
+                                 TextWrapping="Wrap"
+                                 AcceptsReturn="True"
+                                 FontSize="14"
+                                 Padding="8"
+                                 Margin="0,0,0,15"/>
+
+                        <!--<Button Content="Save Changes" 
+                        Width="120" 
+                        Height="35" 
+                        HorizontalAlignment="Left"
+                        Click="SaveButton_Click"/>-->
+                        <Button Content="Save" Command="{Binding SaveNotesCommand}" Margin="10,10,10,10" HorizontalAlignment="Left"/>
+
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </TabItem>
+        
+        <TabItem Header="Settings">
+            <Grid DataContext="{Binding Source={StaticResource ViewModel}}" >
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Highlighted drivers" FontSize="24" Grid.Row="0" Grid.Column="0"/>
+                    <Label Content="Driver name" FontSize="18" Grid.Row="1" Grid.Column="0"/>
+                    <Label Content="Color" FontSize="18" Grid.Row="1" Grid.Column="1"/>
+                    <Label Content="Human" FontSize="18" Grid.Row="1" Grid.Column="2"/>
+                    <TextBox Text="{Binding Path=HighLights[0].Name}" Grid.Row="3" Grid.Column="0"/>
+                    <ComboBox ItemsSource="{Binding Path=Colors}" SelectedItem="{Binding Path=HighLights[0].Color}" Grid.Row="3" Grid.Column="1"/>
+                    <CheckBox IsChecked="{Binding Path=HighLights[0].Human, Mode=TwoWay}" Grid.Row="3" Grid.Column="2" VerticalAlignment="Center" Margin="10,10,10,10"/>
+
+                    <TextBox Text="{Binding Path=HighLights[1].Name,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Row="4" Grid.Column="0"/>
+                    <ComboBox ItemsSource="{Binding Path=Colors}" SelectedItem="{Binding Path=HighLights[1].Color}" Grid.Row="4" Grid.Column="1"/>
+                    <CheckBox IsChecked="{Binding Path=HighLights[1].Human, Mode=TwoWay}" Grid.Row="4" Grid.Column="2" VerticalAlignment="Center" Margin="10,10,10,10"/>
+
+                    <TextBox Text="{Binding Path=HighLights[2].Name,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Row="5" Grid.Column="0"/>
+                    <ComboBox ItemsSource="{Binding Path=Colors}" SelectedItem="{Binding Path=HighLights[2].Color}" Grid.Row="5" Grid.Column="1"/>
+                    <CheckBox IsChecked="{Binding Path=HighLights[2].Human, Mode=TwoWay}" Grid.Row="5" Grid.Column="2" VerticalAlignment="Center" Margin="10,10,10,10"/>
+
+                    <TextBox Text="{Binding Path=HighLights[3].Name,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Row="6" Grid.Column="0"/>
+                    <ComboBox ItemsSource="{Binding Path=Colors}" SelectedItem="{Binding Path=HighLights[3].Color}" Grid.Row="6" Grid.Column="1"/>
+                    <CheckBox IsChecked="{Binding Path=HighLights[3].Human, Mode=TwoWay}" Grid.Row="6" Grid.Column="2" VerticalAlignment="Center" Margin="10,10,10,10"/>
+
+                    <Label Content="Settings" FontSize="24" Grid.Row="7" Grid.Column="0"/>
+                    <Label Content="Port" FontSize="18" Grid.Row="8" Grid.Column="0"/>
+                    <TextBox Text="{Binding Path=PortNumber,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="10,10,10,10" Grid.Row="8" Grid.Column="1"/>
+                    <Label Content="Automatic swtiching between tabs" FontSize="18" Grid.Row="9" Grid.Column="0"/>
+                    <CheckBox IsChecked="{Binding SwitchingEnabled}" Grid.Row="9" Grid.Column="1" VerticalAlignment="Center" Margin="10,10,10,10"/>
+                    <Label Content="Seconds between switching tabs" FontSize="18" Grid.Row="10" Grid.Column="0"/>
+                    <TextBox Text="{Binding Path=SwitchInterval,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="10,10,10,10" Grid.Row="10" Grid.Column="1"/>
+                    <Label Content="Season name" FontSize="18" Grid.Row="11" Grid.Column="0"/>
+                    <!--<TextBox Text="{Binding Path=SeasonName,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="10,10,10,10" Grid.Row="11" Grid.Column="1" Width="100"/>-->
+                    <ComboBox IsEditable="True" ItemsSource="{Binding SeasonsInSettings}" SelectedItem="{Binding SeasonName, UpdateSourceTrigger=PropertyChanged}" Text="{Binding NewSeason, UpdateSourceTrigger=LostFocus}" Margin="10,10,10,10" Grid.Row="11" Grid.Column="1" Width="100"/>
+                    <Button Content="Save" Command="{Binding SaveSettingsCommand}" Margin="10,10,10,10" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="12" Grid.Column="0"/>
+                </Grid>
+            </Grid>
+        </TabItem>
+        </TabControl>
+    
+</Window>
