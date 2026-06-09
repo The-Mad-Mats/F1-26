@@ -89,6 +89,16 @@ namespace F1
             return msg;
         }
 
+        public static PacketCarTelemetry2Data ConvertToCarTelemetry2Data(byte[] packet)
+        {
+            var pinnedPacket = GCHandle.Alloc(packet, GCHandleType.Pinned);
+            var msg = (PacketCarTelemetry2Data)Marshal.PtrToStructure(
+                pinnedPacket.AddrOfPinnedObject(),
+                typeof(PacketCarTelemetry2Data));
+            pinnedPacket.Free();
+            return msg;
+        }
+
         public static PacketCarStatusData ConvertToCarStatusData(byte[] packet)
         {
             var pinnedPacket = GCHandle.Alloc(packet, GCHandleType.Pinned);

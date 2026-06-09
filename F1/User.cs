@@ -19,6 +19,7 @@ namespace F1
         private int _cornerCutValue;
         private double _gapToLeader;
         public double _gapToAhead;
+        public double _ersStore;
         private static Dictionary<string, TyreAlertLimit> _tyreAlerts = new Dictionary<string, TyreAlertLimit>
             {
                 { "16", new TyreAlertLimit() { Blue = 0, Green = 70, Yellow = 110, Red = 130 } },
@@ -781,7 +782,7 @@ namespace F1
                     case "0": return "None";
                     case "1": return "Medium";
                     case "2": return "Hotlap";
-                    case "3": return "Overtake";
+                    case "3": return "Boost";
                     default: return _fuelMix;
                 }
             }
@@ -835,7 +836,40 @@ namespace F1
         public int RightRearInnerTemp { get; set; }
         public string EngineTemp { get; set; }
         public string Fuel { get; set; }
-        public string ERSStore { get; set; }
+        public string ERSStore 
+        {
+            get
+            {
+                var percent = _ersStore / 40000;
+                return Convert.ToInt32(percent).ToString();
+            }
+            set
+            {
+                _ersStore = Convert.ToDouble(value);
+            }
+        }
+        public string ERSStoreColor
+        {
+            get
+            {
+                if(_ersStore > 3000000)
+                {
+                    return "Green";
+                } 
+                else if(_ersStore > 2000000)
+                {
+                    return "Blue";
+                }
+                else if(_ersStore > 1000000)
+                {
+                    return "Yellow";
+                }
+                else
+                {
+                    return "Red";
+                }
+            }
+        }
 
         public int m_position { get; set; }             // Finishing position
         public int m_numLaps { get; set; }               // Number of laps completed

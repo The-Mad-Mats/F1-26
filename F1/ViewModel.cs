@@ -962,7 +962,7 @@ namespace F1
                                         if (index >= _numberOfDrivers)
                                             break;
                                         userList[index].Speed = td.m_speed.ToString();
-                                        userList[index].DRS = td.m_drs.ToString();
+                                        //userList[index].DRS = td.m_drs.ToString();
                                         var a = td.m_brakesTemperature[0] + td.m_brakesTemperature[1] + td.m_brakesTemperature[2] + td.m_brakesTemperature[3];
                                         var b = a / 4;
                                         userList[index].BrakesTemp = b.ToString();
@@ -992,6 +992,30 @@ namespace F1
                                 catch (Exception e)
                                 {
                                     MessageBox.Show("Telmetry Data" + e.Message);
+                                    throw;
+                                }
+                            }
+                            break;
+                        case 16:
+                            //Handle Car telemetry 2 data
+                            if (userList.Count > 0)
+                            {
+                                try
+                                {
+                                    var telemetryData = UDPConverter.ConvertToCarTelemetry2Data(data);
+                                    int index = 0;
+                                    foreach (var td in telemetryData.m_carTelemetry2Data)
+                                    {
+                                        if (index >= _numberOfDrivers)
+                                            break;
+                                        userList[index].DRS = td.m_overtakeAvailable.ToString();
+
+                                        index++;
+                                    }
+                                }
+                                catch (Exception e)
+                                {
+                                    MessageBox.Show("Telmetry Data 2" + e.Message);
                                     throw;
                                 }
                             }

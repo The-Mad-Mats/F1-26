@@ -58,9 +58,9 @@ namespace F1
         public short m_worldRightDirX; // World space right X direction (normalised)
         public short m_worldRightDirY; // World space right Y direction (normalised)
         public short m_worldRightDirZ; // World space right Z direction (normalised)
-        public float m_gForceLateral; // Lateral G-Force component
-        public float m_gForceLongitudinal; // Longitudinal G-Force component
-        public float m_gForceVertical; // Vertical G-Force component
+        public short m_gForceLateral; // Lateral G-Force component
+        public short m_gForceLongitudinal; // Longitudinal G-Force component
+        public short m_gForceVertical; // Vertical G-Force component
         public float m_yaw; // Yaw angle in radians
         public float m_pitch; // Pitch angle in radians
         public float m_roll; // Roll angle in radians
@@ -70,7 +70,7 @@ namespace F1
     public struct PacketMotionData
     {
         public PacketHeader m_header; // Header
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 22)]
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 24)]
         public CarMotionData[] m_carMotionData; // Data for all cars on track
         // Extra player car ONLY data
         //[MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
@@ -100,6 +100,20 @@ namespace F1
     {
         public float m_zoneStart; // Fraction (0..1) of way through the lap the marshal zone starts
         public sbyte m_zoneFlag; // -1 = invalid/unknown, 0 = none, 1 = green, 2 = blue, 3 = yellow, 4 = red
+    };
+
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    public struct ActiveAeroZone
+    {
+        public float m_zoneStart;        // Fraction (0..1) of way through the lap the Active Aero zone starts
+        public float m_zoneEnd;          // Fraction (0..1) of way through the lap the Active Aero zone ends
+    };
+
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    public struct DRSZone
+    {
+        public float m_zoneStart;        // Fraction (0..1) of way through the lap the DRS zone starts
+        public float m_zoneEnd;          // Fraction (0..1) of way through the lap the DRS zone ends
     };
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
@@ -205,6 +219,23 @@ namespace F1
                                                 // structure - see appendix for types
         public float m_sector2LapDistanceStart;          // Distance in m around track where sector 2 starts
         public float m_sector3LapDistanceStart;          // Distance in m around track where sector 3 starts
+        // Aero and DRS zones
+        byte m_activeAeroTrackStatus;            // 0 = Full, 1 = Partial
+        byte m_numActiveAeroZonesFull;           // Number of Active Aero zones to follow
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 8)]
+        ActiveAeroZone[] m_activeAeroZonesFull;  // List of Active Aero zones - max 8
+        byte m_numActiveAeroZonesPartial;        // Number of Active Aero zones to follow
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 8)]
+        ActiveAeroZone[] m_activeAeroZonesPartial;  // List of Active Aero zones - max 8
+        byte m_numDRSZones;                      // Number of DRS zones to follow
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+        DRSZone[] m_drsZones;   // List of DRS zones - max 4
+        float m_startReactionTime;                // Driver start reaction time in seconds, 0.0f if assisted starts
+        byte m_antiLockBrakesAssist;             // 0 = Off, 1 = On
+        byte m_tractionControlAssist;            // 0 = Off, 1 = Medium, 2 = Full
+        byte m_dynamicRacingLineHiVis;           // 0 = Off, 1 = On
+        byte m_dynamicRacingLineColourBlind;     // 0 = Off, 1 = Protanopia, 2 = Deuteranopia, 3 = Tritanopia
+        byte m_recurringRewindPrompt;            // 0 = Off, 1 = On
 
     };
 
@@ -260,7 +291,7 @@ namespace F1
     public struct PacketLapData
     {
         public PacketHeader m_header; // Header
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 22)]
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 24)]
         public LapData[] m_lapData; // Lap data for all cars on track
         public byte m_timeTrialPBCarIdx;  // Index of Personal Best car in time trial (255 if invalid)
         public byte m_timeTrialRivalCarIdx; 	// Index of Rival car in time trial (255 if invalid)
@@ -406,6 +437,7 @@ namespace F1
     {
         public byte vehicle1Idx;            // Vehicle index of the first vehicle involved in the collision
         public byte vehicle2Idx;            // Vehicle index of the second vehicle involved in the collision
+        public byte severity;               // Severity of the collision - 0 = low, 1 = medium, 2 = high
     };
 
 
@@ -424,9 +456,9 @@ namespace F1
     public struct ParticipantData
     {
         public byte m_aiControlled; // Whether the vehicle is AI (1) or Human (0) controlled
-        public byte m_driverId; // Driver id - see appendix
-        public byte m_networkId;      // Network id – unique identifier for network players
-        public byte m_teamId; // Team id - see appendix
+        public ushort m_driverId; // Driver id - see appendix
+        public ushort m_networkId;      // Network id – unique identifier for network players
+        public ushort m_teamId; // Team id - see appendix
         public byte m_myTeam;       // My team flag – 1 = My Team, 0 = otherwise
         public byte m_raceNumber; // Race number of the car
         public byte m_nationality; // Nationality of the driver
@@ -455,7 +487,7 @@ namespace F1
         public PacketHeader m_header; // Header
 
         public byte m_numActiveCars; // Number of cars in the data
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 22)]
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 24)]
         public ParticipantData[] m_participants;
     };
 
@@ -491,7 +523,7 @@ namespace F1
     public struct PacketCarSetupData
     {
         public PacketHeader m_header; // Header
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 22)]
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 24)]
         public CarSetupData[] m_carSetups;
     };
 
@@ -514,7 +546,7 @@ namespace F1
         public byte[] m_tyresSurfaceTemperature; // Tyres surface temperature (celsius)
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
         public byte[] m_tyresInnerTemperature; // Tyres inner temperature (celsius)
-        public ushort m_engineTemperature; // Engine temperature (celsius)
+        public byte m_engineTemperature; // Engine temperature (celsius)
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
         public float[] m_tyresPressure; // Tyres pressure (PSI)
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
@@ -525,7 +557,7 @@ namespace F1
     public struct PacketCarTelemetryData
     {
         public PacketHeader m_header; // Header
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 22)]
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 24)]
         public CarTelemetryData[] m_carTelemetryData;
         //public uint m_buttonStatus; // Bit flags specifying which buttons are being pressed currently - see appendices
         public byte m_mfdPanelIndex;       // Index of MFD panel open - 255 = MFD closed
@@ -536,6 +568,30 @@ namespace F1
         public sbyte m_suggestedGear;       // Suggested gear for the player (1-8)
                                     // 0 if no gear suggested
     };
+
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    public struct CarTelemetry2Data
+    {
+        public byte m_activeAeroMode;                   // 0 = Corner mode, 1 = Straight mode
+        public byte m_activeAeroAvailable;              // 0 = not available, 1 = available
+        public ushort m_activeAeroActivationDistance;     // 0 = Active aero not available, non-zero - Active aero will be available in [X] metres
+        public byte m_overtakeAvailable;                // 0 = not available, 1 = available
+        public byte m_overtakeActive;                   // 0 = not active, 1 = active
+        public ushort m_overtakeActivationDistance;       // 0 = Overtake Mode not available, non-zero - Overtake Mode will be available in [X] metres
+        public byte m_2026Regulations;                  // 0 = vehicle conforms to pre-2026, 1 = 2026 regulations applicable
+        public byte m_drivingWrongWay;                  // Whether the car is driving the wrong way
+    };
+
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    public struct PacketCarTelemetry2Data
+    {
+        PacketHeader m_header;               // Header
+
+        // Packet specific data
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 24)]
+        public CarTelemetry2Data[] m_carTelemetry2Data;   // data for all cars on track
+    };
+
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     public struct CarStatusData
@@ -564,6 +620,7 @@ namespace F1
         public byte m_ersDeployMode; // ERS deployment mode, 0 = none, 1 = medium  2 = overtake, 3 = hotlap
         public float m_ersHarvestedThisLapMGUK; // ERS energy harvested this lap by MGU-K
         public float m_ersHarvestedThisLapMGUH; // ERS energy harvested this lap by MGU-H
+        public float m_ersHarvestLimitPerLap;            // ERS energy harvest limit for this lap
         public float m_ersDeployedThisLap; // ERS energy deployed this lap
         public byte m_networkPaused;            // Whether the car is paused in a network game    
     };

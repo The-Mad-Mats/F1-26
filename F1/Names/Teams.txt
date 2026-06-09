@@ -28,3 +28,14 @@ McLaren1982,37
 Williams2003,38
 Brawn2009,39
 Lotus1978,40
+Mercedes,476
+Ferrari,477
+Red Bull,478
+Williams,479
+Aston Martin,480
+Alpine,481
+Racing Bulls,482
+Haas,483
+McLaren,484
+Audi,485
+Cadillac,486

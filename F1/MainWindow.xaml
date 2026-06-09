@@ -114,7 +114,7 @@
                 <DataTrigger Binding="{Binding ERSMode}" Value="High">
                     <Setter Property="Background" Value="Aqua"/>
                 </DataTrigger>
-                <DataTrigger Binding="{Binding ERSMode}" Value="Overtake">
+                <DataTrigger Binding="{Binding ERSMode}" Value="Boost">
                     <Setter Property="Background" Value="Blue"/>
                     <Setter Property="Foreground" Value="White"/>
                 </DataTrigger>
@@ -130,7 +130,7 @@
                     <Setter Property="Background" Value="White"/>
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Team}" Value="Mercedes">
-                    <Setter Property="Background" Value="Silver"/>
+                    <Setter Property="Background" Value="DarkGray"/>
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Team}" Value="Ferrari">
                     <Setter Property="Background" Value="Red"/>
@@ -147,7 +147,7 @@
                 <DataTrigger Binding="{Binding Team}" Value="Alpine">
                     <Setter Property="Background" Value="DodgerBlue"/>
                 </DataTrigger>
-                <DataTrigger Binding="{Binding Team}" Value="Cash App RB">
+                <DataTrigger Binding="{Binding Team}" Value="Racing Bulls">
                     <Setter Property="Background" Value="CornflowerBlue"/>
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Team}" Value="Haas">
@@ -156,8 +156,11 @@
                 <DataTrigger Binding="{Binding Team}" Value="McLaren">
                     <Setter Property="Background" Value="DarkOrange"/>
                 </DataTrigger>
-                <DataTrigger Binding="{Binding Team}" Value="Kick Sauber">
-                    <Setter Property="Background" Value="LimeGreen"/>
+                <DataTrigger Binding="{Binding Team}" Value="Audi">
+                    <Setter Property="Background" Value="LightSalmon"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Team}" Value="Cadillac">
+                    <Setter Property="Background" Value="Silver"/>
                 </DataTrigger>
             </Style.Triggers>
         </Style>
@@ -215,6 +218,26 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
+        <Style TargetType="DataGridCell" x:Key="ERSStoreCellStyle">
+            <Setter Property="Background" Value="White"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ERSStoreColor}" Value="{x:Null}">
+                    <Setter Property="Background" Value="White"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding ERSStoreColor}" Value="Green">
+                    <Setter Property="Background" Value="LightGreen"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding ERSStoreColor}" Value="Blue">
+                    <Setter Property="Background" Value="LightBlue"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding ERSStoreColor}" Value="Yellow">
+                    <Setter Property="Background" Value="Yellow"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding ERSStoreColor}" Value="Red">
+                    <Setter Property="Background" Value="Red"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
 
     </Window.Resources>
     <TabControl SelectionChanged="TabControl_SelectionChanged"  Name="Tab" HorizontalAlignment="Left" VerticalAlignment="Top" >
@@ -248,6 +271,9 @@
                         <DataGridTextColumn Header="GapToLeader" Binding="{Binding GapToLeader}" Width="Auto" FontSize="24" CellStyle="{StaticResource ActiveCellStyle}"/>
                         <DataGridTextColumn Header="GapToAhead" Binding="{Binding GapToAhead}" Width="Auto" FontSize="24" CellStyle="{StaticResource ActiveCellStyle}"/>
                         <DataGridTextColumn Header="Tyres" Binding="{Binding TyreWear}"  Width="Auto" FontSize="24" CellStyle="{StaticResource TyreCellStyle}"/>
+                        <DataGridTextColumn Header="Battery" Binding="{Binding ERSStore}"  Width="Auto" FontSize="24" CellStyle="{StaticResource ERSStoreCellStyle}" />
+                        <DataGridTextColumn Header="Overtake" Binding="{Binding DRS}"  Width="Auto" FontSize="24" CellStyle="{StaticResource DRSCellStyle}"/>
+                        <DataGridTextColumn Header="ERSMode" Binding="{Binding ERSMode}"  Width="Auto" FontSize="24" CellStyle="{StaticResource ERSCellStyle}"/>
                         <DataGridTemplateColumn Header="WingDamage" Width="Auto" IsReadOnly="True">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
@@ -265,8 +291,6 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTextColumn Header="DRS" Binding="{Binding DRS}"  Width="Auto" FontSize="24" CellStyle="{StaticResource DRSCellStyle}"/>
-                        <DataGridTextColumn Header="ERSMode" Binding="{Binding ERSMode}"  Width="Auto" FontSize="24" CellStyle="{StaticResource ERSCellStyle}"/>
                         <!--<DataGridTextColumn Header="FuelMix" Binding="{Binding FuelMix}"  Width="Auto" FontSize="24" CellStyle="{StaticResource FuelCellStyle}"/> -->
                         <DataGridTextColumn Header="Fuel" Binding="{Binding Fuel}"  Width="Auto" FontSize="24" />
                         <DataGridTextColumn Header="Team" Binding="{Binding Team}" Width="Auto" FontSize="24" CellStyle="{StaticResource TeamCellStyle}"/>
@@ -287,8 +311,7 @@
             <DataGridTextColumn Header="In Pits" Binding="{Binding Pits}"  Width="Auto" FontSize="24"/>
                 <DataGridTextColumn Header="BrakesTemp" Binding="{Binding BrakesTemp}"  Width="Auto" FontSize="24" />
                 <DataGridTextColumn Header="Tyre Surface" Binding="{Binding TyreSurfTemp}"  Width="Auto" FontSize="24" />
-                <DataGridTextColumn Header="EngineTemp" Binding="{Binding EngineTemp}"  Width="Auto" FontSize="24" />
-                <DataGridTextColumn Header="ERSStore" Binding="{Binding ERSStore}"  Width="Auto" FontSize="24" />-->
+                <DataGridTextColumn Header="EngineTemp" Binding="{Binding EngineTemp}"  Width="Auto" FontSize="24" />-->
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>
